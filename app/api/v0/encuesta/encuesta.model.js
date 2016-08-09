@@ -1,21 +1,36 @@
 var ObjectId = require('mongodb').ObjectID;
-
+var autoIncrement = require("mongodb-autoincrement");
 
 
 
 module.exports.create = function(db, data, callback) {
   //var valid = Util.validateModel(data, { required:['key'], number:['key'], string:['name','description'] });
   var valid = true;
+  var collectionName = "encuestas";
   if(valid){
-      db.collection('encuestas').insertOne( {
-          title            : data.title,
-          date            : new Date(),
+
+  autoIncrement.getNextSequence(db, collectionName, function (err, autoIndex) {
+
+      var direccionObj = { id:data.direccion.id, name: data.direccion.name}; 
+      var tipoEncuestaObj = { id:data.tipoEncuesta.id, name: data.tipoEncuesta.name}; 
+
+      db.collection(collectionName).insertOne( {
+          id              : autoIndex,
+          titulo          : data.titulo,
+          descripcion     : data.descripcion,
+          direccion       : direccionObj,
+          valides         : new Date(data.valides),
+          tiempo          : data.tiempo,
+          tipoEncuesta    : tipoEncuestaObj,
+          date            : new Date()
       }, function(err, result){
-          result.ops[0].id = result.ops[0]._id;
+          // result.ops[0].id = result.ops[0]._id;
           delete result.ops[0]._id;
           delete result.ops[0].date;  
           callback(err, result.ops[0], 200);
       } );
+
+    });
   }else{
     callback(null, 'Invalid Model', 201);
   }
@@ -26,7 +41,7 @@ module.exports.retrieve = function(db, callback) {
    var cursor = db.collection('encuestas').find({});
    cursor.each(function(err, doc) {
       if (doc != null) {
-          doc.id = doc._id;
+          // doc.id = doc._id;
           delete doc._id;
           delete doc.date;
           result.push(doc);
@@ -38,10 +53,10 @@ module.exports.retrieve = function(db, callback) {
 
 module.exports.detail = function(db, id, callback) {
    var result = [];
-   var cursor = db.collection('encuestas').find({ _id : ObjectId(id) });
+   var cursor = db.collection('encuestas').find({ id : Number(id) });
    cursor.each(function(err, doc) {
       if (doc != null) {
-          doc.id = doc._id;
+          // doc.id = doc._id;
           delete doc._id;
           delete doc.date;
           result.push(doc);
@@ -53,7 +68,7 @@ module.exports.detail = function(db, id, callback) {
 
 module.exports.update = function(db, id, data, callback) {
    db.collection('encuestas').updateOne(
-        { _id : ObjectId(id) },
+        { id : Number(id) },
         {
           $set: data,
           $currentDate: { "lastModified": true }
@@ -65,7 +80,7 @@ module.exports.update = function(db, id, data, callback) {
 
 module.exports.replace = function(db, id, data, callback) {
    db.collection('encuestas').replaceOne(
-        { _id : ObjectId(id) },
+        { id : Number(id) },
         data
         ,function(err, results) {
             data.id = id;
@@ -78,9 +93,9 @@ module.exports.delete = function(db, id, callback) {
   
   module.exports.detail(db, id, function(result){
       db.collection('encuestas').deleteMany(
-        { _id : ObjectId(id) },
+        { id : Number(id) },
         function(err, results) {
-            callback(err, result, 200);
+            callback(err, results, 200);
         }
     );
   });
