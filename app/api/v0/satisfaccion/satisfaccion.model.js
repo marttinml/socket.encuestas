@@ -1,5 +1,4 @@
 var ObjectId = require('mongodb').ObjectID;
-var autoIncrement = require("mongodb-autoincrement");
 var collectionName = "satisfaccion";
 
 

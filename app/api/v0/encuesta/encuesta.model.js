@@ -2,7 +2,6 @@ var ObjectId = require('mongodb').ObjectID;
 var autoIncrement = require("mongodb-autoincrement");
 
 
-
 module.exports.create = function(db, data, callback) {
   //var valid = Util.validateModel(data, { required:['key'], number:['key'], string:['name','description'] });
   var valid = true;
@@ -13,6 +12,16 @@ module.exports.create = function(db, data, callback) {
 
       var direccionObj = { id:data.direccion.id, name: data.direccion.name}; 
       var tipoEncuestaObj = { id:data.tipoEncuesta.id, name: data.tipoEncuesta.name}; 
+      var preguntasList = [];
+      data.preguntas = data.preguntas || [];
+      for(var i in data.preguntas){
+        var pregunta = {};
+
+        pregunta.id = data.preguntas[i].id;
+        pregunta.pregunta = data.preguntas[i].pregunta;
+        pregunta.respuestas = data.preguntas[i].respuestas || [];
+        preguntasList.push(pregunta);
+      }
 
       db.collection(collectionName).insertOne( {
           id              : autoIndex,
@@ -22,6 +31,8 @@ module.exports.create = function(db, data, callback) {
           valides         : new Date(data.valides),
           tiempo          : data.tiempo,
           tipoEncuesta    : tipoEncuestaObj,
+          preguntas       : preguntasList,
+          autor           : "unknow",
           date            : new Date()
       }, function(err, result){
           // result.ops[0].id = result.ops[0]._id;
