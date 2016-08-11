@@ -8,5 +8,5 @@ module.exports = function (app) {
     app.route('/v0/responder-encuesta/:id').put(ResponderEncuesta.replace);
     app.route('/v0/responder-encuesta/:id').delete(ResponderEncuesta.delete);
 
-    app.route('/v0/indicadores/:id').get(indicadores.indicadores);
+    app.route('/v0/indicadores/:id').get(ResponderEncuesta.indicadores);
 };
