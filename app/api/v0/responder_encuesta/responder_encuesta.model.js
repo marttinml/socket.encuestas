@@ -47,7 +47,7 @@ module.exports.detail = function(db, id, callback) {
       if (doc != null) {
           doc.id = doc._id;
           delete doc._id;
-          delete doc.date;
+          doc.date;
           result.push(doc);
       } else {
          callback(result[0]);
