@@ -106,7 +106,7 @@ module.exports.indicadores = function(db, id, callback) {
           delete doc.date;
           result.respondida++;
       } else {
-         result.respondida = result.respondida + " Veces";
+         // result.respondida = result.respondida + " Veces";
          callback(result);
       }
    });
