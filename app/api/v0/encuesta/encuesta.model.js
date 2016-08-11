@@ -63,16 +63,20 @@ module.exports.retrieve = function(db, callback) {
 };
 
 module.exports.detail = function(db, id, callback) {
-   var result = [];
+   var result = [{}];
    var cursor = db.collection('encuestas').find({ id : Number(id) });
+   var code = 201;
+   var i = 0;
    cursor.each(function(err, doc) {
       if (doc != null) {
           // doc.id = doc._id;
           delete doc._id;
           delete doc.date;
-          result.push(doc);
+          result[i] =doc;
+          i++;
+          code = 200;
       } else {
-         callback(result[0]);
+         callback(result[0], code);
       }
    });
 };
