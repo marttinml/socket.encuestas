@@ -16,8 +16,6 @@ module.exports.create = function(db, data, callback) {
       data.preguntas = data.preguntas || [];
       for(var i in data.preguntas){
         var pregunta = {};
-
-        pregunta.id = data.preguntas[i].id;
         pregunta.pregunta = data.preguntas[i].pregunta;
         pregunta.respuestas = data.preguntas[i].respuestas || [];
         preguntasList.push(pregunta);
