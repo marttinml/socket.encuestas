@@ -96,6 +96,7 @@ module.exports.delete = function(db, id, callback) {
         "encuesta.id" : Number(id)
       }
     );
+   
    cursor.each(function(err, doc) {
       if (doc != null) {
           doc.id = doc._id;
