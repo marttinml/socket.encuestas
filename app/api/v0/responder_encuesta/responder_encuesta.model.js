@@ -11,6 +11,7 @@ module.exports.create = function(db, data, callback) {
           encuesta        : data.encuesta,
           preguntas       : data.preguntasList,
           tipoEncuesta    : data.tipoEncuesta,
+          usuario         : 0,
           date            : new Date()
       }, function(err, result){
           result.ops[0].id = result.ops[0]._id;
