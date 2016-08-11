@@ -140,10 +140,19 @@ module.exports.indicadores = function (req, res) {
     Connection.ejecute(function(err, db){
         assert.equal(null, err);
         //ejecute query
-      ResponderEncuestaModel.indicadores(db, req.params.id, function(result) {
-          db.close();
-          Log.logEnd({ start : start , response: result});
-          res.status(200).jsonp(result);
+
+        EncuestaModel.detail(db, req.params.id,function(encuesta, status){
+
+          if(status === 200){
+                ResponderEncuestaModel.indicadores(db, req.params.id, function(result) {
+                  db.close();
+                  Log.logEnd({ start : start , response: result});
+                  res.status(200).jsonp(result);
+              });
+          }else{
+            var result = {encuesta:req.params.id, mensaje:"No Existe", respondida:0};
+            res.status(201).jsonp(result);
+          }
       });
     });
 };

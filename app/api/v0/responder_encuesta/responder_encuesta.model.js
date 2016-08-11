@@ -88,9 +88,11 @@ module.exports.delete = function(db, id, callback) {
         }
     );
   });
+   
+};
 
-  module.exports.indicadores = function(db, id, callback) {
-   var result = {encuesta:id, respondida:0};
+module.exports.indicadores = function(db, id, callback) {
+   var result = {encuesta:id, mensaje:"", respondida:0};
    var cursor = db.collection(collectionName).find(
       { 
         "encuesta.id" : Number(id)
@@ -108,6 +110,4 @@ module.exports.delete = function(db, id, callback) {
          callback(result);
       }
    });
-};
-   
 };
