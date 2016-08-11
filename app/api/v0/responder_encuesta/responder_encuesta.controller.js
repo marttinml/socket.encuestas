@@ -132,3 +132,19 @@ module.exports.delete = function (req, res) {
     });
 };
 
+
+module.exports.indicadores = function (req, res) {
+    var d   = new Date();
+        start   = d.getMilliseconds();
+        Log.logStart({controller : controller, method:'ResponderEncuesta.detail', d : d});
+    Connection.ejecute(function(err, db){
+        assert.equal(null, err);
+        //ejecute query
+      ResponderEncuestaModel.indicadores(db, req.params.id, function(result) {
+          db.close();
+          Log.logEnd({ start : start , response: result});
+          res.status(200).jsonp(result);
+      });
+    });
+};
+
