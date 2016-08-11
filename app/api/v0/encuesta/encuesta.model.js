@@ -52,7 +52,8 @@ module.exports.retrieve = function(db, callback) {
       if (doc != null) {
           // doc.id = doc._id;
           delete doc._id;
-          delete doc.date;
+          doc.valides = new Date(doc.valides);
+          doc.date = new Date(doc.date);
           result.push(doc);
       } else {
          callback(result);
@@ -69,7 +70,8 @@ module.exports.detail = function(db, id, callback) {
       if (doc != null) {
           // doc.id = doc._id;
           delete doc._id;
-          delete doc.date;
+          doc.valides = new Date(doc.valides);
+          doc.date = new Date(doc.date);
           result[i] =doc;
           i++;
           code = 200;
