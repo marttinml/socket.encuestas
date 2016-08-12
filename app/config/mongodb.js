@@ -1,6 +1,7 @@
 var assert = require('assert');
 	MongoClient = require('mongodb').MongoClient,
-	url 		= 'mongodb://digidev404User:Digital1234@ds051595.mlab.com:51595/encuestas';
+	// url         = 'mongodb://2school666:25ch001666@ds043324.mongolab.com:43324/2school',
+	url 		= 'mongodb://digidev404:d1g1D3v501@ds051595.mlab.com:51595/encuestas';
 	//url         = 'mongodb://localhost/encuestas';
 
 // Test connection
