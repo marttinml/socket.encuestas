@@ -30,6 +30,7 @@ module.exports.create = function(db, data, callback) {
           tiempo          : data.tiempo,
           tipoEncuesta    : tipoEncuestaObj,
           preguntas       : preguntasList,
+          autor           : autor,
           usuario           : 0,
           date            : new Date()
       }, function(err, result){
