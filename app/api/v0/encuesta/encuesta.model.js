@@ -48,17 +48,50 @@ module.exports.create = function(db, data, callback) {
 
 module.exports.retrieve = function(db, callback) {
    var result = [];
-   var cursor = db.collection('encuestas').find({});
-   cursor.each(function(err, doc) {
+
+   var respondida = function(result){
+      var r = 0;
+      
+      var getById = function(id , i){
+          var cursorTemp = db.collection("responder_encuesta").find({"encuesta.id":Number(id)});
+     
+           cursorTemp.each(function(err, doc) {
+              if (doc != null) {
+                   result[i].respondida++;
+              }else{
+
+                if(result.length === (i+1)){
+                  callback(result);
+                }else{
+                  i++;
+                  getById(result[i].id, i);
+                }
+                
+              }
+           });
+      };
+      getById(result[0].id,0);
+
+
+   };
+
+   var row = function(doc){
       if (doc != null) {
           // doc.id = doc._id;
           delete doc._id;
+          doc.respondida = 0;
           doc.valides = new Date(doc.valides);
           doc.date = new Date(doc.date);
           result.push(doc);
       } else {
-         callback(result);
+        respondida(result);
+        //callback(result);
       }
+   };
+
+   var cursor = db.collection('encuestas').find({});
+   cursor.each(function(err, doc) {
+      row(doc);
    });
 };
 
