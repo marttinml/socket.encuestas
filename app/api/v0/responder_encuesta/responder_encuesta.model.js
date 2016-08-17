@@ -129,6 +129,10 @@ module.exports.indicadores = function(db, encuesta, callback) {
           }
           result.respondida++;
       } else {
+        for(var j in  encuesta.graficas){
+                var categoria = encuesta.graficas[j];
+                categoria.porcentaje = (categoria.porcentaje/result.respondida)*100;
+        }
          // result.respondida = result.respondida + " Veces";
          callback(encuesta);
       }
