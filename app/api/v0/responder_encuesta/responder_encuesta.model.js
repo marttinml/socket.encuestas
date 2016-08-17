@@ -98,7 +98,7 @@ module.exports.indicadores = function(db, encuesta, callback) {
       }
     );
    encuesta.graficas = [];
-   encuesta.graficas = 0;
+   encuesta.respondida = 0;
    for(var i in encuesta.preguntas[0].respuestas){
         var respuesta = encuesta.preguntas[0].respuestas[i];
         encuesta.graficas[i] = {};
