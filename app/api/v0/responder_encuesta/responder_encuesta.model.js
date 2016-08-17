@@ -92,13 +92,13 @@ module.exports.delete = function(db, id, callback) {
 };
 
 module.exports.indicadores = function(db, encuesta, callback) {
-   var result = {encuesta:encuesta.id, mensaje:"", respondida:0};
    var cursor = db.collection(collectionName).find(
       { 
         "encuesta.id" : Number(encuesta.id)
       }
     );
    encuesta.graficas = [];
+   encuesta.graficas = 0;
    for(var i in encuesta.preguntas[0].respuestas){
         var respuesta = encuesta.preguntas[0].respuestas[i];
         encuesta.graficas[i] = {};
@@ -127,13 +127,12 @@ module.exports.indicadores = function(db, encuesta, callback) {
                 }
             }
           }
-          result.respondida++;
+          encuesta.respondida++;
       } else {
         for(var j in  encuesta.graficas){
                 var categoria = encuesta.graficas[j];
-                categoria.porcentaje = (categoria.porcentaje/(result.respondida*encuesta.preguntas.length))*100;
+                categoria.porcentaje = (categoria.porcentaje/(encuesta.respondida*encuesta.preguntas.length))*100;
         }
-         // result.respondida = result.respondida + " Veces";
          callback(encuesta);
       }
    });
