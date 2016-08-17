@@ -131,7 +131,8 @@ module.exports.indicadores = function(db, encuesta, callback) {
       } else {
         for(var j in  encuesta.graficas){
                 var categoria = encuesta.graficas[j];
-                categoria.porcentaje = (categoria.porcentaje/(encuesta.respondida*encuesta.preguntas.length))*100;
+                categoria.porcentaje = ((categoria.porcentaje/(encuesta.respondida*encuesta.preguntas.length))*100) || 0;
+                categoria.porcentaje = Match.floor(categoria.porcentaje);
         }
          callback(encuesta);
       }
