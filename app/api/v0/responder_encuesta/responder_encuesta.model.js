@@ -91,23 +91,48 @@ module.exports.delete = function(db, id, callback) {
    
 };
 
-module.exports.indicadores = function(db, id, callback) {
-   var result = {encuesta:id, mensaje:"", respondida:0};
+module.exports.indicadores = function(db, encuesta, callback) {
+   var result = {encuesta:encuesta.id, mensaje:"", respondida:0};
    var cursor = db.collection(collectionName).find(
       { 
-        "encuesta.id" : Number(id)
+        "encuesta.id" : Number(encuesta.id)
       }
     );
-   
+   encuesta.graficas = [];
+   for(var i in encuesta.preguntas[0].respuestas){
+        var respuesta = encuesta.preguntas[0].respuestas[i];
+        encuesta.graficas[i] = {};
+        encuesta.graficas[i].name = encuesta.tipoEncuesta.id === 1 ? respuesta.name : respuesta.categoria;
+        encuesta.graficas[i].porcentaje = 0;
+   }
+      
    cursor.each(function(err, doc) {
       if (doc != null) {
           doc.id = doc._id;
           delete doc._id;
           delete doc.date;
+          for(var i in doc.preguntas){
+            var pregunta = doc.preguntas[i];
+
+            for(var j in  encuesta.graficas){
+                var categoria = encuesta.graficas[j];
+                if(encuesta.tipoEncuesta.id === 1){
+                    if(categoria.name === pregunta.respuesta.name){
+                      categoria.porcentaje++;
+                    }
+                }else{
+                    if(categoria.name === pregunta.respuesta.categoria){
+                      categoria.porcentaje++;
+                    }
+                }
+            }
+          }
           result.respondida++;
       } else {
          // result.respondida = result.respondida + " Veces";
-         callback(result);
+         callback(encuesta);
       }
    });
 };
+
+

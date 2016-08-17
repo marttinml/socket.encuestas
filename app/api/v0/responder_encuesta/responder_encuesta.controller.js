@@ -144,7 +144,7 @@ module.exports.indicadores = function (req, res) {
         EncuestaModel.detail(db, req.params.id,function(encuesta, status){
 
           if(status === 200){
-                ResponderEncuestaModel.indicadores(db, req.params.id, function(result) {
+                ResponderEncuestaModel.indicadores(db, encuesta, function(result) {
                   db.close();
                   Log.logEnd({ start : start , response: result});
                   res.status(200).jsonp(result);
