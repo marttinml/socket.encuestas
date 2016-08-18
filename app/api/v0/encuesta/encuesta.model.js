@@ -71,8 +71,6 @@ module.exports.retrieve = function(db, callback) {
            });
       };
       getById(result[0].id,0);
-
-
    };
 
    var row = function(doc){
@@ -84,8 +82,11 @@ module.exports.retrieve = function(db, callback) {
           doc.date = new Date(doc.date);
           result.push(doc);
       } else {
-        respondida(result);
-        //callback(result);
+          if(result.length){
+            respondida(result);
+          }else{
+            callback(result);
+          }
       }
    };
 
