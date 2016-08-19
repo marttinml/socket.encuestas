@@ -1,15 +1,13 @@
 module.exports = function (io) {
     var ResponderEncuesta = require('./responder_encuesta.controller');
     
-    io.on('connection', function (socket) {
+   var indicadores = io.on('connection', function (socket) {
       
-      socket.on('event-responder-encuesta', function (data) {
-            console.log(data);
+        socket.on('event-responder-encuesta', function (data) {
             ResponderEncuesta.indicadores(data.id,function(result){
-
-                socket.emit('update-indicadores', result);
+                indicadores.emit('update-indicadores', result);
             });
-      });
+        });
 
     });
 
