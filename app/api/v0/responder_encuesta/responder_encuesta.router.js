@@ -1,6 +1,6 @@
 module.exports = function (io) {
     var ResponderEncuesta = require('./responder_encuesta.controller');
-    var ResponderEncuesta = require('../encuesta/encuesta.controller');
+    var Encuesta = require('../encuesta/encuesta.controller');
     
    var indicadores = io.on('connection', function (socket) {
       
@@ -8,7 +8,7 @@ module.exports = function (io) {
             ResponderEncuesta.indicadores(data.id,function(result){
                 indicadores.emit('update-indicadores', result);
             });
-            ResponderEncuesta.retrieve(function(result){
+            Encuesta.retrieve(function(result){
                 indicadores.emit('update-encuestas', result);
             });
         });
