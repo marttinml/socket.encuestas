@@ -1,12 +1,16 @@
-module.exports = function (app) {
+module.exports = function (io) {
     var ResponderEncuesta = require('./responder_encuesta.controller');
     
-    app.route('/v0/responder-encuesta').post(ResponderEncuesta.create);
-    app.route('/v0/responder-encuesta').get(ResponderEncuesta.retrieve);
-    app.route('/v0/responder-encuesta/:id').get(ResponderEncuesta.detail);
-    app.route('/v0/responder-encuesta/:id').patch(ResponderEncuesta.update);
-    app.route('/v0/responder-encuesta/:id').put(ResponderEncuesta.replace);
-    app.route('/v0/responder-encuesta/:id').delete(ResponderEncuesta.delete);
+    io.on('connection', function (socket) {
+      
+      socket.on('event-responder-encuesta', function (data) {
+            console.log(data);
+            ResponderEncuesta.indicadores(data.id,function(result){
 
-    app.route('/v0/indicadores/:id').get(ResponderEncuesta.indicadores);
+                socket.emit('update-indicadores', result);
+            });
+      });
+
+    });
+
 };

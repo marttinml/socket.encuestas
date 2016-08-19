@@ -5,11 +5,14 @@ var assert = require('assert');
 	//url         = 'mongodb://localhost/encuestas';
 
 // Test connection
-module.exports.testConnection = function(callback){
-	callback.starting();
+module.exports.testConnection = function(){
+	console.log("	Connecting to mongodb ···");
     module.exports.ejecute(function(err, db) { 
         assert.equal(null, err);
-        callback.success();
+        
+        console.log("	Connection to mongodb ···················· OK \n");
+		console.log("	Server Started ··························· OK \n");
+	    console.log(" - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n");
         db.close();
     });
 };
